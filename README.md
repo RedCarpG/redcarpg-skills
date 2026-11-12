@@ -103,4 +103,4 @@ skills/<name>/
 
 ## License
 
-[MIT](./LICENSE) © RedCarpG。`mingli-chart-reading/scripts/chart.mjs` 里打包的第三方库见它的 [THIRD_PARTY_NOTICES.md](./skills/mingli-chart-reading/THIRD_PARTY_NOTICES.md)。
+[MIT](./LICENSE) © RedCarpG。`mingli-chart-reading` 打包了 chroniq-core（MIT，见它的 [LICENSE](./skills/mingli-chart-reading/LICENSE)）和 7 个 MIT 开源库，见它的 [THIRD_PARTY_NOTICES.md](./skills/mingli-chart-reading/THIRD_PARTY_NOTICES.md)。

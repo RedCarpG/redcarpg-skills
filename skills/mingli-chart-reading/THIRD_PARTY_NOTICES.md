@@ -1,18 +1,18 @@
 # Third-party notices
 
-`scripts/chart.mjs` 是一个打包好的文件，里面包含下面这些开源库。它们都使用 MIT 许可证，版权声明如下。
+`scripts/*.mjs` bundle chroniq-core (MIT, see LICENSE) together with the libraries and data below.
 
-`scripts/chart.mjs` is a bundled file that includes the following open-source libraries, all under the MIT License.
+| Library | Version | License | Copyright |
+|---|---|---|---|
+| [astronomy-engine](https://www.npmjs.com/package/astronomy-engine) | 2.1.19 | MIT | Copyright (c) 2019-2023 Don Cross |
+| [dayjs](https://www.npmjs.com/package/dayjs) | 1.11.23 | MIT | Copyright (c) 2018-present, iamkun |
+| [i18next](https://www.npmjs.com/package/i18next) | 23.16.8 | MIT | Copyright (c) 2024 i18next |
+| [iztro](https://www.npmjs.com/package/iztro) | 2.6.3 | MIT | Copyright (c) 2023 All Contributors |
+| [lunar-lite](https://www.npmjs.com/package/lunar-lite) | 0.2.8 | MIT | Copyright (c) 2023 Sylar |
+| [lunar-typescript](https://www.npmjs.com/package/lunar-typescript) | 1.8.6 | MIT | Copyright (c) 2020 6tail |
+| [tyme4ts](https://www.npmjs.com/package/tyme4ts) | 1.5.3 | MIT | Copyright (c) 2024 6tail |
 
-| 库 | 版本 | 版权 |
-|---|---|---|
-| [astronomy-engine](https://github.com/cosinekitty/astronomy) | 2.1.19 | Copyright (c) 2019-2023 Don Cross |
-| [tyme4ts](https://github.com/6tail/tyme4ts) | 1.5.3 | Copyright (c) 2024 6tail |
-| [lunar-typescript](https://github.com/6tail/lunar-typescript) | 1.8.6 | Copyright (c) 2020 6tail |
-| [iztro](https://github.com/SylarLong/iztro) | 2.6.3 | Copyright (c) 2023 All Contributors |
-| [dayjs](https://github.com/iamkun/dayjs) | 1.11.23 | Copyright (c) 2018-present, iamkun |
-
-## MIT License
+## MIT License (the libraries above)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

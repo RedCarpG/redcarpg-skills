@@ -33343,11 +33343,8 @@ function ziqiLon(t) {
   return norm(270 + 360 * t.tt / (28 * 365.24219));
 }
 const ciOf = (lon) => Math.floor(norm(lon) / 30) % 12;
-function buildQizheng(input, schools) {
-  const place = input.place ?? DEFAULT_PLACE;
-  const star2 = buildStarChart(input, place, { ...DEFAULT_STAR_SETTINGS, node: schools.node });
-  const t = MakeTime(star2.utc);
-  const mingCi = ciOf(star2.asc);
+function qizhengBodiesAt(utc, schools, mingCi) {
+  const t = MakeTime(utc);
   const make = (key, ra, lon, retro = false) => {
     const { mansion, index, into } = mansionOf(ra);
     const ci = ciOf(lon);
@@ -33370,6 +33367,14 @@ function buildQizheng(input, schools) {
     ...schools.ziqi === "cycle28" ? [["ziqi", ziqiLon(t)]] : []
   ])
     bodies.push(make(key, eclipticRa(lon, t), lon));
+  return bodies;
+}
+function buildQizheng(input, schools) {
+  const place = input.place ?? DEFAULT_PLACE;
+  const star2 = buildStarChart(input, place, { ...DEFAULT_STAR_SETTINGS, node: schools.node });
+  const t = MakeTime(star2.utc);
+  const mingCi = ciOf(star2.asc);
+  const bodies = qizhengBodiesAt(star2.utc, schools, mingCi);
   return {
     utc: star2.utc,
     offsetMinutes: star2.offsetMinutes,
@@ -34144,7 +34149,7 @@ const qizhengBodyText = (b) => {
   const name = info.old !== info.name ? `${info.name}（${info.old}，五行属${info.element}）` : `${info.name}（五行属${info.element}）`;
   return `${name}：${b.mansion.name}（${b.mansion.animal}）入宿 ${b.du.toFixed(1)} 古度（赤经 ${b.into.toFixed(1)}°），黄经 ${b.lon.toFixed(1)}°，在${ciText(b.ci)}，落${palaceName(b.palace)}` + (b.retro ? "，逆行" : "") + (b.reckoned ? "（依流派推算，天上没有对应的天体）" : "");
 };
-function qizhengText(chart, schools) {
+function qizhengText(chart, schools, now) {
   const by = (key) => chart.bodies.find((b) => b.key === key);
   const name = (b) => QIZHENG_INFO[b.key].name;
   const zones = ["east", "north", "west", "south"];
@@ -34173,7 +34178,7 @@ function qizhengText(chart, schools) {
   ];
   return lines.join("\n");
 }
-const VERSION = "0.4.0";
+const VERSION = "0.5.0";
 class UsageError extends Error {
 }
 const USAGE = `用法：node chart.mjs <盘> [选项]

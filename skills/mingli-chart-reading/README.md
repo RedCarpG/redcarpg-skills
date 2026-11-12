@@ -18,7 +18,8 @@
 | `scripts/chart.mjs` | 排盘脚本。由 chroniq-core 打包成单个文件，Node ≥ 20 直接运行，不联网，不写文件 |
 | `references/schools.md` | 各流派的分歧和可信度，解读时怎么说明 |
 | `references/glossary-en.md` | 英文术语对照，用英文回答时使用 |
-| `THIRD_PARTY_NOTICES.md` | 脚本里打包的开源库及其许可 |
+| `LICENSE` | chroniq-core 的 MIT 许可 |
+| `THIRD_PARTY_NOTICES.md` | 脚本里打包的 7 个开源库（都是 MIT）及其版权声明，构建时自动生成 |
 
 ## 安装
 
@@ -28,4 +29,4 @@ npx skills add RedCarpG/redcarpg-skills -s mingli-chart-reading
 
 ## 来源
 
-这里放的是构建出来的副本。源头在 [ChroniQ](https://github.com/RedCarpG/ChroniQ) 的 `core/skill/`，版本号跟着 chroniq-core 走，要改请去那里。详见 [SKILL.md](./SKILL.md) 末尾的「来源与维护」。
+这里放的是构建出来的副本。源头在 [ChroniQ](https://github.com/RedCarpG/ChroniQ) 的 `core/skill/`，版本号跟着 chroniq-core 走，要改请去那里。chroniq-core（ChroniQ 的 `core/` 和 `src/lib/`）以 MIT 发布；ChroniQ 的界面和 AI 解读部分不在 MIT 范围内。详见 [SKILL.md](./SKILL.md) 末尾的「来源与维护」。
