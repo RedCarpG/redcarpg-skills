@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>capture probe</title>
+<!--
+  A tiny self-test page for the capture scripts. It prints what the browser REALLY gave you:
+  layout width/height, colour scheme, print media, language, and how many requestAnimationFrame /
+  setTimeout ticks fired in 3 s. Capture it first when a screenshot looks off:
+    shot.sh   p.png 375x812 assets/probe.html 5000
+    shot.mjs  p.png 375x812 assets/probe.html --wait 3500
+  Expected with shot.mjs (real time): raf ≈ 180. With shot.sh (virtual time): raf ≈ 0-5 while tm ≈ 188.
+-->
+<style>
+  :root { --bg: #ffffff; --fg: #14161a; --accent: #3b6cff; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #10131a; --fg: #eceef2; --accent: #7aa2ff; } }
+  body { margin: 0; padding: 16px; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+  h1 { margin: 0 0 8px; font-size: 20px; }
+  .bar { height: 28px; border-radius: 6px; background: linear-gradient(90deg, #e5484d, var(--accent)); }
+  .deco { margin-bottom: 12px; }           /* hidden in print: a stand-in for decorative layers */
+  @media print { .deco { display: none; } }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 16px 0; }
+  dt { opacity: .65; } dd { margin: 0; font-family: ui-monospace, monospace; word-break: break-all; }
+  .wide { width: 600px; max-width: none; background: var(--accent); color: #fff; padding: 4px 8px; }
+</style>
+</head>
+<body>
+<div class="bar deco">decoration (should be absent when printed)</div>
+<h1>capture probe</h1>
+<dl id="out"><dt>status</dt><dd>script has not run yet</dd></dl>
+<div class="wide">a 600px-wide block: it overflows a narrower viewport, so a 375 layout is visible at a glance</div>
+<script>
+  var raf = 0, tick = 0;
+  (function loop() { raf++; requestAnimationFrame(loop); })();
+  setInterval(function () { tick++; }, 16);
+  setTimeout(function () {
+    var rows = {
+      'layout viewport': innerWidth + ' × ' + innerHeight,
+      'device pixel ratio': devicePixelRatio,
+      'prefers-color-scheme': matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+      'print media': matchMedia('print').matches,
+      'navigator.language': navigator.language,
+      'rAF ticks in 3 s': raf,
+      'setTimeout(16) ticks in 3 s': tick,
+      'document.visibilityState': document.visibilityState,
+      'fonts': document.fonts ? document.fonts.status : 'n/a'
+    };
+    document.getElementById('out').innerHTML = Object.keys(rows).map(function (k) {
+      return '<dt>' + k + '</dt><dd>' + rows[k] + '</dd>';
+    }).join('');
+  }, 3000);
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "frontend-verification",
+  "version": "1.0.0",
+  "category": "Frontend / Verification",
+  "description": "Verify web UI changes and hand over evidence: built-in browser preview first, headless Chrome screenshots or DOM reads when the preview can't cover it, with ready-to-run shot.sh / shot.mjs, known headless pitfalls, and a desktop / mobile / dark / print checklist.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/frontend-verification",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

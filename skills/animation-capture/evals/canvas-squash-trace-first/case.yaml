@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: canvas-squash-trace-first
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  先逐帧记数（比如 window.ballBottom）而不是只看 GIF：发现打开挤压变形后，落地压扁时是绕球心缩的，
+  球的最低点离开了地面（落地那几帧 ballBottom 约 269–270，比地面 280 高出 10 像素左右，球悬在空中），
+  给出具体的帧或时间和数值，并指出原因（应该以球底为基准压扁）。然后录出关/开两格并排的对比 GIF，存下来并说明位置。

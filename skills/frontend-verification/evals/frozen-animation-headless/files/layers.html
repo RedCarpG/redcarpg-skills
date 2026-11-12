@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Layers</title>
+<style>
+  body { margin:0; padding:24px; background:#0b0e14; color:#cfd6e4; font:16px system-ui; }
+  .layer { height:36px; margin:8px 0; border-radius:6px; background:#1b2130; opacity:.25; transition:none; }
+  .layer.lit { background:#c9a24a; opacity:1; }
+</style></head>
+<body>
+  <h1>Layers light up one by one (every 400 ms, driven by requestAnimationFrame)</h1>
+  <div id="stack"></div>
+  <script>
+    var stack = document.getElementById('stack'), layers = [];
+    for (var i = 0; i < 8; i++) { var d = document.createElement('div'); d.className = 'layer'; stack.appendChild(d); layers.push(d); }
+    var start = null;
+    function frame(ts) {
+      if (start === null) start = ts;
+      var n = Math.min(layers.length, Math.floor((ts - start) / 400) + 1);
+      for (var i = 0; i < n; i++) layers[i].classList.add('lit');
+      if (n < layers.length) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  </script>
+</body></html>

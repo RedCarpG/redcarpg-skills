@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: web-easing-ab-gif
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  录出一张两格并排的 GIF（左 a 右 b，有标签），按固定时间一帧一帧录，左右两边同一帧的时间一致
+  （右上角的数字两边相同、随时间均匀增加），菜单从收起开始展开、能看出两种缓动的差别。
+  回答里说明 GIF 和对照图存在哪，以及录的方法（固定步长 / 假时钟），不靠真实时间等待截图。

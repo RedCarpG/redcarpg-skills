@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.zip
+*.zip.sha256
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+# eval 运行产物
+**/evals/**/runs/
+**/evals/**/out/
+# 本地 Claude Code 设置和 worktree
+.claude/settings.local.json
+.claude/worktrees/

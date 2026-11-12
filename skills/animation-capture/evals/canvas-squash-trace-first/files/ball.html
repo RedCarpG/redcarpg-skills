@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh">
+<head><meta charset="utf-8"><style>body{margin:0;background:#fafafa}canvas{display:block}</style></head>
+<body>
+<canvas id="stage" width="320" height="320"></canvas>
+<script>
+  // 弹跳的球。?squash=1 打开「挤压变形」：落地时压扁、弹起时拉长。
+  const squash = new URLSearchParams(location.search).get("squash") === "1";
+  const c = document.getElementById("stage"), g = c.getContext("2d");
+  const GROUND = 280, R = 30;
+  let y = 60, vy = 0, last = performance.now();
+  function draw(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    vy += 1800 * dt; y += vy * dt;
+    if (y + R > GROUND) { y = GROUND - R; vy = -vy * 0.82; }
+    const speed = Math.min(1, Math.abs(vy) / 900);
+    const near = Math.max(0, 1 - (GROUND - R - y) / 40);
+    const sy = squash ? 1 - 0.35 * near + 0.15 * speed * (1 - near) : 1;
+    const sx = 1 / sy;
+    g.clearRect(0, 0, c.width, c.height);
+    g.fillStyle = "#888"; g.fillRect(0, GROUND, c.width, 4);
+    g.save(); g.translate(160, y); g.scale(sx, sy); g.beginPath(); g.arc(0, 0, R, 0, Math.PI * 2); g.fillStyle = "#e64"; g.fill(); g.restore();
+    window.ballBottom = y + R * sy; // 球在画面上的最低点（像素）
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+</script>
+</body>
+</html>

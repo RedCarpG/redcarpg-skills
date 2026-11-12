@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Card demo</title>
+<style>
+  :root { --bg:#fff; --fg:#14161a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#10131a; --fg:#eceef2; } }
+  body { margin:0; padding:16px; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui,sans-serif; }
+  .card { width:420px; padding:16px; border:1px solid #888; border-radius:8px; }   /* fixed width: overflows a phone */
+  .card h2 { margin:0 0 8px; color:#222; }                                         /* hard-coded colour: unreadable in dark */
+</style></head>
+<body>
+  <div class="card"><h2>Today's card</h2><p>Some body text that explains the card.</p></div>
+</body></html>

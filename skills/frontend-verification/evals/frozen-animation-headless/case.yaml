@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: frozen-animation-headless
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  Recognises that requestAnimationFrame does not tick under headless virtual time (or in hidden panes and
+  iframes), so the stuck first frame is a property of the verification setup rather than a bug in layers.html.
+  Proves it with a measurement: either real-time capture (shot.mjs) where all 8 layers are lit, or a
+  throw-away copy with a rAF-to-setTimeout shim read back with --dump-dom (8 elements with class lit).
+  The original layers.html is not modified.

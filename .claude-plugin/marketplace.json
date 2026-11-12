@@ -1,0 +1,22 @@
+{
+  "name": "redcarpg-skills",
+  "owner": {
+    "name": "RedCarpG"
+  },
+  "metadata": {
+    "description": "Field-tested agent skills from real projects: frontend verification, deterministic animation capture, and more. Every rule was measured or hit in a shipped project.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "frontend-skills",
+      "description": "Verify UI changes with evidence: screenshots across viewports, dark mode and print checks, and frame-exact before/after animation GIFs.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/frontend-verification",
+        "./skills/animation-capture"
+      ]
+    }
+  ]
+}

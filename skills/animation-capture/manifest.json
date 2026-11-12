@@ -1,0 +1,8 @@
+{
+  "name": "animation-capture",
+  "version": "1.0.0",
+  "category": "Frontend / Animation",
+  "description": "Record anything that moves (CSS, WAAPI, rAF, canvas, three.js / VRM, PixiJS / Live2D) frame by frame on a fake clock and turn it into side-by-side comparison GIFs. Deterministic: two recordings match frame for frame.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/animation-capture",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

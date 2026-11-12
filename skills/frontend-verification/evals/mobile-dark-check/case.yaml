@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: mobile-dark-check
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  Uses headless Chrome (not the hidden preview pane) to capture the page at 375 wide in light and dark,
+  with a tool or flags that give a real 375 layout (shot.mjs, or shot.sh's iframe fallback), reads the
+  reported innerWidth/scrollWidth, finds that the 420px card overflows a 375 viewport and that the heading
+  (hard-coded #222) is unreadable on the dark background, looks at the screenshots, and hands over file
+  paths plus those concrete findings. Temporary files are not left in the project.

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; font: 16px system-ui; background: #fafafa; }
+  #stage { position: relative; width: 360px; height: 240px; overflow: hidden; background: #fff; border: 1px solid #ddd; }
+  .menu { position: absolute; left: 16px; top: 16px; width: 140px; height: 0; background: #4a7; border-radius: 8px; transition: height 600ms var(--ease, linear); }
+  .open .menu { height: 160px; }
+  .dot { position: absolute; right: 30px; top: 30px; width: 30px; height: 30px; border-radius: 50%; background: #e64; animation: bob 1s var(--ease, linear) infinite alternate; }
+  @keyframes bob { to { transform: translateY(150px); } }
+  .bar { position: absolute; left: 180px; bottom: 20px; width: 20px; height: 20px; background: #46c; }
+  .b .menu, .b .dot { --ease: cubic-bezier(.2,1.6,.4,1); }
+  .b { --ease: cubic-bezier(.2,1.6,.4,1); }
+</style>
+</head>
+<body>
+<div id="stage"><div class="menu"></div><div class="dot"></div><div class="bar"></div></div>
+<script>
+  const v = new URLSearchParams(location.search).get("v") || "a";
+  document.getElementById("stage").classList.add(v);
+  document.querySelector(".bar").animate([{ transform: "translateX(0)" }, { transform: "translateX(140px)" }], { duration: 1200, easing: v === "b" ? "cubic-bezier(.2,1.6,.4,1)" : "linear", fill: "forwards" });
+  // 一段 JS（rAF）画的：数字往上数
+  const n = document.createElement("div"); n.style.cssText = "position:absolute;left:180px;top:20px;font-size:28px"; document.getElementById("stage").append(n);
+  const t0 = performance.now();
+  (function loop(now) { n.textContent = Math.min(100, Math.floor((now - t0) / 12)); requestAnimationFrame(loop); })(t0);
+  setTimeout(() => document.getElementById("stage").classList.add("open"), 50);
+</script>
+</body>
+</html>
