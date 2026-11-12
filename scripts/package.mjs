@@ -2,17 +2,22 @@
 // 每个 skill 打一个 zip，可以上传到 claude.ai（Settings → Capabilities → Skills），也可以附到 GitHub Release。
 //   node scripts/package.mjs              全部
 //   node scripts/package.mjs <名字> ...    只打这几个
+//   node scripts/package.mjs --from <repo> 打另一个 repo 的 skills/（输出到它的 dist/）
 // 输出 dist/<名字>-<版本>.zip。zip 里是 <名字>/SKILL.md 这样的一层目录。
 // 不打进去：evals/（测试用例）、README.md 和 manifest.json（给人和 repo 看的）、缓存文件。
 // 只用 node 自带模块：自己写 zip（store 不压缩之外用 deflate），不依赖系统的 zip/tar。
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
-import { join, relative, sep } from 'node:path'
+import { join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { deflateRawSync, crc32 } from 'node:zlib'
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..')
-const SKILLS = join(ROOT, 'skills')
-const OUT = join(ROOT, 'dist')
+const argv = process.argv.slice(2)
+const opt = (flag) => { const i = argv.indexOf(flag); return i >= 0 ? argv.splice(i, 2)[1] : null }
+// --from <repo 目录>：打别的 repo 的 skills/（比如私人 repo 的孵化区），输出到那个 repo 的 dist/
+const FROM = resolve(opt('--from') ?? ROOT)
+const SKILLS = join(FROM, 'skills')
+const OUT = join(FROM, 'dist')
 const SKIP_TOP = new Set(['evals', 'README.md', 'manifest.json'])
 const SKIP_ANY = new Set(['__pycache__', '.DS_Store', 'Thumbs.db', 'node_modules'])
 
@@ -57,7 +62,7 @@ function zip(entries) {
   return Buffer.concat([...locals, cd, end])
 }
 
-const wanted = process.argv.slice(2)
+const wanted = argv
 const names = readdirSync(SKILLS).filter((n) => statSync(join(SKILLS, n)).isDirectory() && (!wanted.length || wanted.includes(n)))
 mkdirSync(OUT, { recursive: true })
 for (const name of names) {
