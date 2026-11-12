@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: museum-bronze-exhibit
+expected_outcome: |
+  东方暖夜底色的展品页：第一屏是鼎这一幕，四角竖排写名称、年代、出土、尺寸等要点，事实准确（不编造），书法点缀来自真实出处（如鼎的铭文），装饰只在宽屏、aria-hidden、不打印，手机上依次排成一列且没有横向滚动。

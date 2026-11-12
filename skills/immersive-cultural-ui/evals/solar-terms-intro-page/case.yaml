@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: solar-terms-intro-page
+expected_outcome: |
+  一个单独能打开的二十四节气介绍页。第一屏是一幕（主体占满、四角少量竖排信息），背景压暗，装饰淡且有真实出处（例如七十二候），竖排里数字写成汉字，遵守 prefers-reduced-motion，手机上没有横向滚动。

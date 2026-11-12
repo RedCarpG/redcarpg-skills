@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: click-through-pet-window
+expected_outcome: |
+  Explains that set_ignore_cursor_events applies to the whole window, so once it is on the page can no longer see the
+  mouse. The fix: the front end reports interactive regions to Rust, and a Rust thread polls the global cursor position
+  (around 30 times a second, using cached window position/scale updated from window events) and toggles click-through
+  only when the state changes. For the gaps in a half-body Live2D model it renders or reads the character's alpha
+  periodically (for example every 250 ms, at reduced size, only the character) and turns it into small rectangles,
+  with an ellipse fallback. click_through.rs and hit-mask.ts are written.

@@ -7,7 +7,7 @@
 Field-tested agent skills for Claude Code, Cursor, Codex and other AI coding agents.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
-[![Skills](https://img.shields.io/badge/skills-2-orange?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/skills-9-orange?style=flat-square)](#skills)
 [![Spec](https://img.shields.io/badge/spec-SKILL.md-black?style=flat-square)](https://agentskills.io)
 
 </div>
@@ -26,17 +26,34 @@ Field-tested agent skills for Claude Code, Cursor, Codex and other AI coding age
 
 ## Skills
 
-### [`frontend-verification`](./skills/frontend-verification)
+### 前端
 
-改完界面拿出证据：先用内置浏览器预览，覆盖不到时用无头 Chrome 截多个视口、深浅色、打印效果，或者读 DOM。收录了无头 Chrome 里实测过的坑（375 宽被撑成 500、rAF 动画冻住、深色模式跟随系统等），以及一份核对清单。
+| Skill | 做什么 |
+|---|---|
+| [`frontend-verification`](./skills/frontend-verification) | 改完界面拿出证据：先用内置浏览器预览，覆盖不到时用无头 Chrome 截多个视口、深浅色、打印，或者读 DOM。收录了实测过的坑（375 宽被撑成 500、rAF 动画冻住、深色模式跟随系统）和一份核对清单 |
+| [`animation-capture`](./skills/animation-capture) | 用假时钟把动画逐帧录下来，做成并排对比的 GIF，两次录制逐字节相同。适用于 CSS、WAAPI、rAF、canvas、three.js / VRM、PixiJS / Live2D |
+| [`immersive-cultural-ui`](./skills/immersive-cultural-ui) | 东方古典或神秘学气质的沉浸式网页：夜空、金线、宣纸、竖排、书法批注、景深视差。提供带具体数值的风格配方、可复用代码和交付前检查清单 |
 
-[README](./skills/frontend-verification/README.md) · [SKILL.md](./skills/frontend-verification/SKILL.md)
+### 虚拟角色
 
-### [`animation-capture`](./skills/animation-capture)
+| Skill | 做什么 |
+|---|---|
+| [`live2d-vrm-animation`](./skills/live2d-vrm-animation) | 让 Live2D 和 VRM 角色自然地动起来：程序层和动作片段的覆盖顺序、物理前叠加、VTube Studio 模型补齐、程序「带动层」、AI 生成动作的数据格式 |
+| [`vrm-model-conversion`](./skills/vrm-model-conversion) | 在 Blender 后台把 FBX、PMX、glTF、.blend 转成 VRM 1.0：骨骼自动对应、表情烘焙、加弹簧骨和碰撞体、MToon。附参数化的 `vrm_kit.py` 和不需要 Blender 的检查脚本 |
 
-用假时钟把动画逐帧录下来，做成并排对比的 GIF，两次录制逐字节相同。适用于 CSS、WAAPI、rAF、canvas、three.js / VRM、PixiJS / Live2D。
+### AI 应用
 
-[README](./skills/animation-capture/README.md) · [SKILL.md](./skills/animation-capture/SKILL.md)
+| Skill | 做什么 |
+|---|---|
+| [`ai-assistant-tool-safety`](./skills/ai-assistant-tool-safety) | 给 LLM 开工具时的权限设计、提示词注入防护、插件隔离，以及把 Claude Agent SDK 嵌进自己应用时必须改的默认值 |
+| [`chinese-tts`](./skills/chinese-tts) | 中文 TTS 的文本规范化（数字、年份、电话、单位怎么念，流式边界怎么处理）和本机引擎工程。附 139 条对照用例和检查脚本 |
+| [`tauri-sidecar-desktop`](./skills/tauri-sidecar-desktop) | Tauri 2 + Node sidecar 桌面应用：透明窗口的鼠标穿透、用架构测试卡住三方约定、NDJSON 通信、原子写入、sidecar 测试、插件宿主 |
+
+### 领域
+
+| Skill | 做什么 |
+|---|---|
+| [`mingli-chart-reading`](./skills/mingli-chart-reading) | 用自带的离线脚本排八字、紫微、西洋星盘、七政四余、黄历和天象，再照盘解读。构建自 ChroniQ 的 chroniq-core |
 
 ## 安装
 
@@ -60,7 +77,10 @@ npx skills add RedCarpG/redcarpg-skills/tree/frontend-verification-v1.0.0/skills
 
 | 插件包 | 包含 |
 |---|---|
-| `frontend-skills` | `frontend-verification`、`animation-capture` |
+| `frontend-skills` | `frontend-verification`、`animation-capture`、`immersive-cultural-ui` |
+| `avatar-skills` | `live2d-vrm-animation`、`vrm-model-conversion` |
+| `ai-app-skills` | `ai-assistant-tool-safety`、`chinese-tts`、`tauri-sidecar-desktop` |
+| `mingli-skills` | `mingli-chart-reading` |
 
 ### 手动
 
@@ -83,4 +103,4 @@ skills/<name>/
 
 ## License
 
-[MIT](./LICENSE) © RedCarpG
+[MIT](./LICENSE) © RedCarpG。`mingli-chart-reading/scripts/chart.mjs` 里打包的第三方库见它的 [THIRD_PARTY_NOTICES.md](./skills/mingli-chart-reading/THIRD_PARTY_NOTICES.md)。

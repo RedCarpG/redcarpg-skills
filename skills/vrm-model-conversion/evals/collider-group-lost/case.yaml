@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: collider-group-lost
+expected_outcome: |
+  指出两个原因：存下来的集合元素引用在之后再往集合里加东西时失效，应在每加一个碰撞体（和组）时马上记 uuid；
+  碰撞体的 offset/tail 是骨头节点自己的坐标（大腿骨的 Y 朝下），tail 应写成沿骨头的正 Y 或从世界方向换算。给出改后的代码和导出后怎么核对。

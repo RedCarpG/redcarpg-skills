@@ -1,0 +1,8 @@
+{
+  "name": "live2d-vrm-animation",
+  "version": "1.0.0",
+  "category": "Avatar / Animation",
+  "description": "Make Live2D (Cubism on PixiJS) and VRM (three.js + three-vrm) characters move naturally: load order, procedural pose vs. clip overrides, layering before physics, fixing VTube Studio models, AnimationMixer pitfalls, a procedural follow-through layer, spring bones, and data formats for AI-generated expressions and motions.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/live2d-vrm-animation",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

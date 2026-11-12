@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: tarot-daily-draw
+expected_outcome: |
+  西方星空（深靛）底色的单页：抽牌时逐层亮起并可跳过，仪式感动画不打扰重复访问，牌义解读放在一幕之外的完整内容里，装饰（如拉丁铭文）有真实出处，遵守 prefers-reduced-motion。

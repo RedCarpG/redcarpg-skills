@@ -4,18 +4,49 @@
     "name": "RedCarpG"
   },
   "metadata": {
-    "description": "Field-tested agent skills from real projects: frontend verification, deterministic animation capture, and more. Every rule was measured or hit in a shipped project.",
-    "version": "0.1.0"
+    "description": "Field-tested agent skills from real projects: frontend verification and animation capture, immersive cultural UI, Live2D / VRM avatars, Mandarin TTS, Tauri + sidecar desktop apps, LLM tool safety, and Chinese metaphysics chart reading. Every rule was measured or hit in a shipped project.",
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "frontend-skills",
-      "description": "Verify UI changes with evidence: screenshots across viewports, dark mode and print checks, and frame-exact before/after animation GIFs.",
+      "description": "Verify UI changes with evidence (screenshots across viewports, dark mode, print), record frame-exact before/after animation GIFs, and build immersive East-Asian classical pages.",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/frontend-verification",
-        "./skills/animation-capture"
+        "./skills/animation-capture",
+        "./skills/immersive-cultural-ui"
+      ]
+    },
+    {
+      "name": "avatar-skills",
+      "description": "Live2D and VRM characters: natural procedural motion, expressions and physics, plus converting rigged 3D models to VRM 1.0 in Blender.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/live2d-vrm-animation",
+        "./skills/vrm-model-conversion"
+      ]
+    },
+    {
+      "name": "ai-app-skills",
+      "description": "Building AI assistant apps: tool permissions and prompt-injection defence, Mandarin TTS text normalization and engines, and Tauri + sidecar desktop architecture.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ai-assistant-tool-safety",
+        "./skills/chinese-tts",
+        "./skills/tauri-sidecar-desktop"
+      ]
+    },
+    {
+      "name": "mingli-skills",
+      "description": "Cast BaZi, Zi Wei Dou Shu, Western and Qi Zheng Si Yu charts and the Chinese almanac with a bundled offline script, then read strictly from the chart.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/mingli-chart-reading"
       ]
     }
   ]

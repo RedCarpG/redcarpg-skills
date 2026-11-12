@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: diagnose-stream-misreads
+expected_outcome: |
+  Explains that splitting sentences before normalization breaks units that span punctuation (the colon in 14:30, the ~
+  in 3~5 stripped as decoration) and that streaming conversion decides on a number before the characters after it
+  arrive (80 before 年代). Fix: normalize before splitting, hold back digits until a couple of following characters
+  arrive and carry the tail of the previous chunk as context, only treat a half-width colon as a pause when followed by
+  whitespace, and run every test both whole and fed one character at a time.

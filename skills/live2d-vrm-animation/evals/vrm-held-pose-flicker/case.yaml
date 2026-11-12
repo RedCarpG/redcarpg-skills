@@ -1,0 +1,11 @@
+schema_version: "1.1"
+name: vrm-held-pose-flicker
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  Explains that three.js AnimationMixer does not write a bone when its blended value is unchanged from the previous
+  frame, so during a held keyframe segment the procedural rest pose written every frame shows through, with a jump at
+  the start and end of the hold. Fix in avatar.ts: collect the node names the playing clips have tracks for and skip
+  those bones when applying the procedural pose. For the one-shot snapping back: set clampWhenFinished = true on
+  LoopOnce actions and fade out after finishing. Verification: log the bone's rotation every frame after render, before
+  and after the fix, and expect the held value to stay constant.

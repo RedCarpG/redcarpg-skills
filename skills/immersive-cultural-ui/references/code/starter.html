@@ -1,0 +1,215 @@
+<!doctype html>
+<!-- 天书骨架页（immersive-cultural-ui skill）：所有层次和动效都接好了，直接双击打开就能看。
+     它只是骨架。【】里的都要换成这一页自己的：主体图、四角的字、立着的要素、说明行、装饰、详细内容。
+     data-realm="east" 东方暖夜，"west" 西方星空；lang 改成 zh-Hant / en 时，竖排、书法字体会跟着变。
+     单文件交付时，把 tianshu.css 和 immersive.js 的内容分别内联到 <style> 和 <script> 里，删掉用不到的部分。 -->
+<html lang="zh-CN" data-realm="east">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>【页面标题】</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- 中文字体由 Google Fonts 按 unicode-range 切片，只下载页面上出现的字。
+       书法字体只用在装饰里几个字时，可以单独一行加 &text=（URL 编码的那几个字）只取这几个字 -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+SC:wght@400;600&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" />
+  <link rel="stylesheet" href="tianshu.css" />
+  <style>
+    /* 这一页自己的样式：页头、两种看法、装饰的位置 */
+    .page { max-width: 1240px; margin: 0 auto; padding: 0 16px 80px; }
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0 6px; }
+    .brand { margin: 0; font-family: var(--font-title); font-size: 18px; font-weight: 600; letter-spacing: 0.3em; color: var(--accent); }
+    :root[lang='en'] .brand { letter-spacing: 0.06em; }
+    main[data-view='full'] .only-simple, main[data-view='simple'] .only-full { display: none; }
+    .relations { display: grid; gap: 4px; font-family: var(--font-scene); font-size: 13px; letter-spacing: 0.2em; color: var(--muted); }
+    .relations span:first-child { color: var(--text); }
+    /* 装饰的位置：按这一页的留白调，宽屏 1100、1280、1440 三个宽度都要看一眼不压字 */
+    .note-a { right: calc(3% + 4px); bottom: 120px; }
+    .motif-a { left: calc(3% + 10px); top: 46%; }
+    .lede { max-width: 38em; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <!-- ③ 氛围层，从后往前：底色和星空 → 光雾、雾、光点、宣纸纤维、颗粒 → 暗纱（.ts-atmos::after）→ 烛光。全部 aria-hidden -->
+  <div class="ts-sky" data-depth="-1" aria-hidden="true"><canvas id="stars"></canvas></div>
+  <div class="ts-atmos" data-depth="-0.45" aria-hidden="true">
+    <div class="ts-mist"></div>
+    <!-- 雾在氛围层里面，深度 0.8 与外层 -0.45 叠加：比星空近，反向错开 -->
+    <svg class="ts-fog" data-depth="0.8">
+      <filter id="ts-fog" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0032 0.0055" numOctaves="4" seed="11" />
+        <!-- 东方暖灰；西方换成 0 0 0 0 0.56  0 0 0 0 0.56  0 0 0 0 0.74  1.6 0 0 0 -0.64 -->
+        <feColorMatrix values="0 0 0 0 0.66  0 0 0 0 0.6  0 0 0 0 0.5  1.6 0 0 0 -0.62" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#ts-fog)" />
+    </svg>
+    <svg class="ts-motes" id="motes" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg class="ts-paper">
+      <filter id="ts-paper" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035 0.11" numOctaves="2" seed="4" />
+        <feColorMatrix values="0 0 0 0 0.93  0 0 0 0 0.86  0 0 0 0 0.7  0 0 0 1.4 -0.78" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#ts-paper)" />
+    </svg>
+    <svg class="ts-grain">
+      <filter id="ts-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#ts-grain)" />
+    </svg>
+  </div>
+  <div class="ts-glow" aria-hidden="true"></div>
+
+  <div class="page">
+    <header class="bar ts-noselect">
+      <p class="brand">【站名】</p>
+      <!-- 简洁 / 详细：并排的安静控件 -->
+      <div class="ts-seg" role="group" aria-label="看法">
+        <button type="button" class="ts-btn" data-view-btn="simple" aria-pressed="true">简洁</button>
+        <button type="button" class="ts-btn" data-view-btn="full" aria-pressed="false">详细</button>
+      </div>
+    </header>
+
+    <main id="main" data-view="simple">
+      <!-- ④ 简洁：一幕。主体居中，四角竖排；开场逐层亮起（.cast-l1 … .cast-l3） -->
+      <div class="ts-scene ts-noselect only-simple" id="scene">
+        <!-- 右上：主语，大号金字题头 + 几列竖排 -->
+        <div class="ts-corner tr ts-vertical">
+          <b class="cast-l1">【主语】</b>
+          <span class="cast-l2">【第二列　一句】</span>
+          <span class="cast-l3">【第三列　一句】</span>
+          <small>【小字：日期、地点】</small>
+        </div>
+        <!-- 左上：来历和背景；手机上改横排 -->
+        <div class="ts-corner tl ts-vertical wide-only cast-l3">
+          <span>【来历】</span>
+          <span>【背景】</span>
+        </div>
+        <!-- 主体：发光的细金线（下面的脚本画），背后刷一个极淡的大字 -->
+        <div class="ts-scene-main" data-depth="0.22">
+          <svg id="dial" viewBox="0 0 600 600" role="img" aria-label="【主体的文字说明，给读屏软件】"></svg>
+          <!-- 【换成主体中心的那个字】 -->
+          <span class="ts-ink" aria-hidden="true">字</span>
+        </div>
+        <!-- 说明行：这一层是什么，跳过 / 重看 -->
+        <p class="ts-cast" id="cast-line" aria-live="polite"></p>
+        <!-- 左下：要素像碑一样立着；最要紧的那个加 .key -->
+        <div class="ts-corner bl ts-stand cast-l2" aria-label="【要素】">
+          <div><small>【甲】</small><b style="color: var(--wood)">【】</b></div>
+          <div><small>【乙】</small><b style="color: var(--fire)">【】</b></div>
+          <div class="key"><small>【丙】</small><b style="color: var(--accent)">【】</b></div>
+          <div><small>【丁】</small><b style="color: var(--water)">【】</b></div>
+        </div>
+        <!-- 右下：关系与结论 -->
+        <div class="ts-corner br relations cast-l3">
+          <span>【关系一句】</span>
+          <span>【细节】</span>
+        </div>
+        <!-- ⑪ 装饰：和主题相关、有出处的原文；很淡，只在宽屏，不打印，英文不显示 -->
+        <p class="ts-note note-a" aria-hidden="true">
+          <span>【书名】曰</span>
+          <span>【原文第一句】</span>
+          <span>【原文第二句】</span>
+        </p>
+        <svg class="ts-motif motif-a" viewBox="0 0 132 64" aria-hidden="true">
+          <polyline points="4,10 8,34 40,44 50,20 76,16 100,18 126,40" />
+          <circle cx="4" cy="10" r="2.6" /><circle cx="8" cy="34" r="2.6" /><circle cx="40" cy="44" r="2.6" /><circle cx="50" cy="20" r="2.6" />
+          <circle cx="76" cy="16" r="2.6" /><circle cx="100" cy="18" r="2.6" /><circle cx="126" cy="40" r="2.6" />
+          <text x="4" y="62">北斗</text>
+        </svg>
+      </div>
+
+      <!-- ⑧ 往下是完整内容：没有卡片，区块之间一道渐隐细线；标题金色宽字距，东方下方一笔枯笔 -->
+      <section class="ts-section only-full" id="full">
+        <h2 class="ts-section-title">【完整视图】</h2>
+        <table class="ts-table">
+          <tr><th>【项】</th><td>【详细内容】</td></tr>
+          <tr><th>【项】</th><td>【详细内容】</td></tr>
+          <tr><th>【项】</th><td>【详细内容】</td></tr>
+        </table>
+      </section>
+      <section class="ts-section" id="part-1">
+        <h2 class="ts-section-title">【第一部分】</h2>
+        <p class="lede">【正文用无衬线，读着不累。区块进入视野时轻轻浮起；停在区块顶部附近时页面会缓缓吸过去。】</p>
+        <p><button type="button" class="ts-primary">【主要操作 →】</button></p>
+      </section>
+      <section class="ts-section" id="part-2">
+        <h2 class="ts-section-title">【第二部分】</h2>
+        <p class="lede">【……】</p>
+        <p><span class="ts-tag">【标签】</span>　<span class="ts-tag">【标签】</span></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="immersive.js"></script>
+  <script>
+    const I = window.Immersive
+    const realm = document.documentElement.dataset.realm
+
+    // 氛围：星空、光点（各画一次），景深，流星
+    I.drawStars(document.getElementById('stars'), realm === 'west' ? { colours: ['#ffffff', '#dfe6ff', '#ffe9c8'], seed: 13 } : {})
+    I.drawMotes(document.getElementById('motes'), realm === 'west' ? { n: 150, seed: 13, colours: ['#ffffff', '#c8d6ff', '#ffe2bd'] } : {})
+    I.startParallax()
+    I.startMeteors()
+    I.startSectionSnap()
+
+    // ⑤ 主体：一面细金线的圆盘。【换成这一页自己的图：罗盘、星图、器物线描……】
+    const RING = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'] // 【绕圈的字】
+    const LIT = [0, 3, 6] // 【点亮的几格】
+    const C = 300
+    const at = (r, deg) => [C + r * Math.sin((deg * Math.PI) / 180), C - r * Math.cos((deg * Math.PI) / 180)]
+    const f = (n) => n.toFixed(1)
+    let svg = ''
+    svg += `<circle class="ts-plate" cx="${C}" cy="${C}" r="290" />`
+    // 外圈刻度：一组，极慢地转
+    svg += '<g class="ts-turn">'
+    for (let i = 0; i < 120; i++) {
+      const [x1, y1] = at(282, i * 3), [x2, y2] = at(i % 10 ? 276 : 270, i * 3)
+      svg += `<line class="ts-tick${i % 10 ? '' : ' major'}" x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" />`
+    }
+    svg += '</g>'
+    svg += `<circle class="ts-ring strong" cx="${C}" cy="${C}" r="288" />`
+    svg += `<circle class="ts-ring faint" cx="${C}" cy="${C}" r="262" />`
+    svg += `<circle class="ts-ring" cx="${C}" cy="${C}" r="200" />`
+    svg += `<circle class="ts-ring dotted" cx="${C}" cy="${C}" r="140" />`
+    RING.forEach((ch, i) => {
+      const deg = i * (360 / RING.length)
+      const [x1, y1] = at(200, deg - 180 / RING.length), [x2, y2] = at(262, deg - 180 / RING.length)
+      svg += `<line class="ts-spoke" x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" />`
+      const [x, y] = at(231, deg)
+      const lit = LIT.includes(i)
+      svg += `<text class="ts-label${lit ? ' lit' : ''}${lit ? ' cast-l2' : ''}" x="${f(x)}" y="${f(y)}">${ch}</text>`
+    })
+    // 点亮的几格连到中心：第一条是主线（金色实线），其余是次线（朱红虚线）
+    LIT.forEach((i, k) => {
+      const [x, y] = at(206, i * (360 / RING.length))
+      svg += `<line class="ts-thread${k ? ' soft' : ''} cast-l3" x1="${f(x)}" y1="${f(y)}" x2="${C}" y2="${C}" />`
+    })
+    svg += `<circle class="ts-heart" cx="${C}" cy="${C}" r="62" />`
+    svg += `<text class="ts-center-char ts-breathe cast-l1" x="${C}" y="${C}">【】</text>`
+    document.getElementById('dial').innerHTML = svg
+
+    // ⑨ 逐层亮起：一层一句说明
+    const caster = I.cast(document.getElementById('scene'), {
+      layers: 3,
+      line: document.getElementById('cast-line'),
+      captions: ['第一重 · 【中心】', '第二重 · 【点亮的几格】', '第三重 · 【它们之间的关系】'],
+    })
+
+    // 简洁 ↔ 详细：View Transition 交叉淡入淡出；详细里不播开场
+    const main = document.getElementById('main')
+    document.querySelectorAll('[data-view-btn]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.viewBtn
+        if (main.dataset.view === view) return
+        I.smoothUpdate('view', () => {
+          main.dataset.view = view
+          document.querySelectorAll('[data-view-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)))
+        })
+        if (view === 'full') caster.skip()
+      }),
+    )
+  </script>
+</body>
+</html>

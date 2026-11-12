@@ -1,0 +1,8 @@
+{
+  "name": "mingli-chart-reading",
+  "version": "0.4.0",
+  "category": "Domain / Chinese metaphysics",
+  "description": "Cast and read charts from a birth date: BaZi (Four Pillars), Zi Wei Dou Shu, Western natal / transits / progressions / synastry, Qi Zheng Si Yu, the Chinese almanac and sky events, via a bundled offline script, then interpret strictly from the chart.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/mingli-chart-reading",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

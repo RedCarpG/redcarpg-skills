@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: agent-sdk-companion-config
+expected_outcome: |
+  session.ts uses a streaming-input (AsyncIterable) prompt for a long-lived session and sets the non-default options a
+  companion app needs: settingSources: [] (so ~/.claude settings, CLAUDE.md and hooks are not loaded), claude.ai
+  connectors disabled with strictMcpConfig, read-only tools in allowedTools with a deny-by-default canUseTool fallback,
+  the future send-message tool kept out of allowedTools so it needs confirmation, and CLAUDE* host environment variables
+  stripped (keeping CLAUDE_CONFIG_DIR) because it is launched from a Claude Code terminal. No API key in code.

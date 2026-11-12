@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: settings-lost-on-crash
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  Identifies two causes: writeFileSync truncates then writes, so a crash mid-write leaves an empty or partial file; and
+  a file that fails to parse (hand edit, BOM, partial write) silently falls back to defaults, after which the next save
+  overwrites the user's broken-but-recoverable file. settings-store.ts is changed to write atomically (temp file in the
+  same folder, fsync, rename, with a retry for Windows EPERM/EBUSY) and to set a corrupt file aside under a new name
+  (and report it) instead of overwriting it; a BOM is tolerated; wrong-shaped JSON counts as corrupt.

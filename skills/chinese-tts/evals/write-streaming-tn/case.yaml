@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: write-streaming-tn
+expected_outcome: |
+  tn.mjs exports normalize and createStream. Year-like numbers are read digit by digit (2026年 → 二零二六年, 26年见 → 二六年见)
+  while durations read as amounts (工作了26年 → 二十六年, 80年代 → 八十年代); phone numbers and verification codes are read
+  digit by digit with 1 as 幺; units are converted only right after a number (2L → 两升, 60km/h → 每小时六十公里);
+  ranges keep their meaning (3~5天 → 三到五天, 3~5% → 百分之三到五); times read as 十四点半. The streaming path holds back
+  digits until enough following characters arrive, so feeding one character at a time gives the same result as normalize.

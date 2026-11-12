@@ -1,0 +1,8 @@
+{
+  "name": "vrm-model-conversion",
+  "version": "1.1.0",
+  "category": "Avatar / 3D pipeline",
+  "description": "Convert rigged 3D characters (FBX, PMX/MMD, XPS, glTF/GLB, .blend) to VRM 1.0 headlessly in Blender: humanoid bone mapping, A-pose to T-pose, expressions (including baking bone-driven faces), spring bones and colliders, MToon, texture downsizing and license meta. Ships a parameterised vrm_kit.py and a Blender-free inspector.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/vrm-model-conversion",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

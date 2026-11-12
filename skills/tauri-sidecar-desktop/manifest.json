@@ -1,0 +1,8 @@
+{
+  "name": "tauri-sidecar-desktop",
+  "version": "1.0.0",
+  "category": "Desktop / Architecture",
+  "description": "Architecture and pitfalls for desktop apps built as shell + web frontend + background sidecar (Tauri 2 + Node, also Electron + child process): pixel-accurate click-through for transparent windows, single-source contracts enforced by architecture tests, NDJSON IPC, atomic JSON storage, data migration, process-level and packaged sidecar tests, and a plugin host.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/tauri-sidecar-desktop",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

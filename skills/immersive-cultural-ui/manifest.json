@@ -1,0 +1,8 @@
+{
+  "name": "immersive-cultural-ui",
+  "version": "1.0.0",
+  "category": "Design / Frontend",
+  "description": "Immersive web pages with an East-Asian classical or mystical mood: night sky, fine gold lines, mist, rice-paper texture, vertical Chinese text, calligraphy annotations, depth parallax and layered reveals. Ships a numeric style recipe, reusable code and a pre-delivery checklist; pairs with web-design-engineer.",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/immersive-cultural-ui",
+  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+}

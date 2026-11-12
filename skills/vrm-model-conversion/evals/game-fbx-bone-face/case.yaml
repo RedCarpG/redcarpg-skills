@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: game-fbx-bone-face
+expected_outcome: |
+  给出一份能在 blender -b 下跑的参数化脚本：导入 FBX 并应用缩放旋转；Biped 骨头对到 VRM 人形骨（含手指的特殊对应）；
+  因为没有形态键，用摆脸部骨头再烘成形态键的办法做 blink 和 aa；给披风加骨链并重新分权重、配弹簧和碰撞体；
+  碰撞体的 offset/tail 按骨头自己的坐标写、加碰撞体时马上记 uuid；meta 填成仅个人使用、不可再分发；
+  最后给出检查清单（T-pose、表情截图、披风摆动、碰撞体位置）。
