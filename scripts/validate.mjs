@@ -4,6 +4,10 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { homedir } from 'node:os';
+import { basename } from 'node:path';
+
+const USER_DIR = basename(homedir());
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
 const SKILLS = join(ROOT, 'skills');
@@ -16,6 +20,8 @@ const TEXT_EXT = /\.(md|mjs|js|cjs|ts|py|sh|ps1|json|ya?ml|html|css|txt|toml)$/i
 const FORBIDDEN = [
   [/\b[A-Za-z]:[\\/]+(Users|Project)\b/i, '本机绝对路径'],
   [/\/(Users|home)\/(?!<|\$|you\b|me\b|user\b|name\b)[A-Za-z0-9._-]+\//, '本机绝对路径'],
+  // 本机用户目录名（C:\Users\<这个>）：运行时读取，不写进仓库
+  ...(USER_DIR.length >= 4 ? [[new RegExp(`(^|[^A-Za-z0-9])${USER_DIR.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^A-Za-z0-9]|$)`), '本机用户目录名']] : []),
   [/[A-Za-z0-9._%+-]+@(gmail|qq|163|outlook|hotmail)\.com/i, '邮箱'],
   [/\b(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[0-9A-Z]{16})\b/, '疑似密钥'],
 ];
