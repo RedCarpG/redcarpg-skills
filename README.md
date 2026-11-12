@@ -7,7 +7,7 @@
 Field-tested agent skills for Claude Code, Cursor, Codex and other AI coding agents.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
-[![Skills](https://img.shields.io/badge/skills-9-orange?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/skills-10-orange?style=flat-square)](#skills)
 [![Spec](https://img.shields.io/badge/spec-SKILL.md-black?style=flat-square)](https://agentskills.io)
 
 </div>
@@ -49,6 +49,12 @@ Field-tested agent skills for Claude Code, Cursor, Codex and other AI coding age
 | [`chinese-tts`](./skills/chinese-tts) | 中文 TTS 的文本规范化（数字、年份、电话、单位怎么念，流式边界怎么处理）和本机引擎工程。附 139 条对照用例和检查脚本 |
 | [`tauri-sidecar-desktop`](./skills/tauri-sidecar-desktop) | Tauri 2 + Node sidecar 桌面应用：透明窗口的鼠标穿透、用架构测试卡住三方约定、NDJSON 通信、原子写入、sidecar 测试、插件宿主 |
 
+### 开发流程
+
+| Skill | 做什么 |
+|---|---|
+| [`multi-session-dev`](./skills/multi-session-dev) | 几个 AI 会话一起开发一个项目：一个管理会话决策和集成，每个任务一个开发会话、各有 worktree。项目档案、任务简报、派工前四项检查（写入边界、串行契约、只有一份的资源、等你的事）、验收分档、结束报告和交接、CI 分钟数。和工具无关，附初始化脚本 |
+
 ### 领域
 
 | Skill | 做什么 |
@@ -81,6 +87,7 @@ npx skills add RedCarpG/redcarpg-skills/tree/frontend-verification-v1.0.0/skills
 | `avatar-skills` | `live2d-vrm-animation`、`vrm-model-conversion` |
 | `ai-app-skills` | `ai-assistant-tool-safety`、`chinese-tts`、`tauri-sidecar-desktop` |
 | `mingli-skills` | `mingli-chart-reading` |
+| `workflow-skills` | `multi-session-dev` |
 
 ### 手动
 

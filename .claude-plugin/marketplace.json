@@ -4,7 +4,7 @@
     "name": "RedCarpG"
   },
   "metadata": {
-    "description": "Field-tested agent skills from real projects: frontend verification and animation capture, immersive cultural UI, Live2D / VRM avatars, Mandarin TTS, Tauri + sidecar desktop apps, LLM tool safety, and Chinese metaphysics chart reading. Every rule was measured or hit in a shipped project.",
+    "description": "Field-tested agent skills from real projects: frontend verification and animation capture, immersive cultural UI, Live2D / VRM avatars, Mandarin TTS, Tauri + sidecar desktop apps, LLM tool safety, multi-session AI development workflow, and Chinese metaphysics chart reading. Every rule was measured or hit in a shipped project.",
     "version": "0.2.0"
   },
   "plugins": [
@@ -47,6 +47,15 @@
       "strict": false,
       "skills": [
         "./skills/mingli-chart-reading"
+      ]
+    },
+    {
+      "name": "workflow-skills",
+      "description": "Run several AI coding sessions on one project: a coordinating session plus one dev session per task in its own worktree, task briefs, pre-dispatch checks, evidence tiers, handoffs and CI-minute budgeting.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/multi-session-dev"
       ]
     }
   ]
