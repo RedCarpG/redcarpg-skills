@@ -7,7 +7,10 @@ import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { basename } from 'node:path';
 
-const USER_DIR = basename(homedir());
+// CI 和云端容器的通用账号名（runner、root…）也是普通英文词，拿来查会满屏误报；只查作者本机那种个人目录名
+const GENERIC_USERS = new Set(['root', 'runner', 'user', 'ubuntu', 'admin', 'administrator', 'vscode', 'codespace', 'node', 'docker']);
+const HOME_NAME = basename(homedir());
+const USER_DIR = GENERIC_USERS.has(HOME_NAME.toLowerCase()) ? '' : HOME_NAME;
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
 const SKILLS = join(ROOT, 'skills');
