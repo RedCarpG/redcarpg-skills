@@ -1,0 +1,20 @@
+{
+  "name": "redcarpg-chat-skills",
+  "version": "0.2.0",
+  "description": "Private ChatGPT package of selected RedCarpG Agent Skills, with runtime guards and canonical references.",
+  "author": {
+    "name": "RedCarpG"
+  },
+  "repository": "https://github.com/RedCarpG/redcarpg-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "RedCarpG Skills",
+    "shortDescription": "Development coordination, immersive UI and AI tool security skills.",
+    "longDescription": "ChatGPT-targeted build of selected RedCarpG Agent Skills. Full references and assets are included; local scripts are intentionally not bundled. Use tools only when available and authorized.",
+    "developerName": "RedCarpG",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ]
+  }
+}
