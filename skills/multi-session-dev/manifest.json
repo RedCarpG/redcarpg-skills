@@ -1,8 +1,27 @@
 {
   "name": "multi-session-dev",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "category": "Workflow / Multi-agent",
   "description": "Run several AI coding sessions on one project without stepping on each other: a coordinating session that decides and integrates, one dev session per task in its own branch and worktree, subagents for short research and review, cloud sessions while you're away. Covers the project profile, task briefs, pre-dispatch checks (write scope, serial contracts, single-instance resources, how many things wait on the user), evidence tiers, the one-line end report, handoffs, coordinator rules, and CI minutes.",
   "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/multi-session-dev",
-  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+  "compat": [
+    "claude-code",
+    "claude-ai",
+    "cursor",
+    "codex-cli",
+    "chatgpt-chat"
+  ],
+  "runtime": {
+    "chatgpt-chat": {
+      "level": "partial",
+      "focus": [
+        "planning",
+        "design",
+        "review"
+      ],
+      "limitations": [
+        "Local execution requires appropriate available and authorized tools"
+      ]
+    }
+  }
 }
