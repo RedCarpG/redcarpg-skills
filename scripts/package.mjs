@@ -66,6 +66,7 @@ function zip(entries) {
 
 const wanted = argv
 const names = readdirSync(SKILLS).filter((n) => statSync(join(SKILLS, n)).isDirectory() && (!wanted.length || wanted.includes(n)))
+if (wanted.some(n => !names.includes(n))) throw new Error('Unknown Skill: ' + wanted.filter(n => !names.includes(n)).join(', '))
 mkdirSync(OUT, { recursive: true })
 if (chatgpt) {
   if (FROM !== resolve(ROOT)) throw new Error('--chatgpt cannot be combined with --from')
@@ -111,7 +112,6 @@ if (chatgpt) {
   console.log(out + ': ' + selected.length + ' Skills, ' + (statSync(out).size / 1024).toFixed(0) + ' KB')
   process.exit(0)
 }
-if (wanted.some(n => !names.includes(n))) throw new Error('Unknown Skill: ' + wanted.filter(n => !names.includes(n)).join(', '))
 for (const name of names) {
   const dir = join(SKILLS, name)
   let version = 'dev'
