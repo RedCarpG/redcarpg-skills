@@ -1,8 +1,27 @@
 {
   "name": "ai-assistant-tool-safety",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "category": "AI apps / Security",
   "description": "Tool permissions and prompt-injection defence for LLM assistants and AI characters: read-only by default, confirm before acting, treat external text (notifications, web pages, email, PR titles, clipboard) as data, sandbox plugins, and the defaults you must change when embedding the Claude Agent SDK in your own app.",
   "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/ai-assistant-tool-safety",
-  "compat": ["claude-code", "claude-ai", "cursor", "codex-cli"]
+  "compat": [
+    "claude-code",
+    "claude-ai",
+    "cursor",
+    "codex-cli",
+    "chatgpt-chat"
+  ],
+  "runtime": {
+    "chatgpt-chat": {
+      "level": "partial",
+      "focus": [
+        "planning",
+        "design",
+        "review"
+      ],
+      "limitations": [
+        "Local execution requires appropriate available and authorized tools"
+      ]
+    }
+  }
 }
