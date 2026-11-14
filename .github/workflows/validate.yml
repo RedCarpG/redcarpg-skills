@@ -18,3 +18,10 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/validate.mjs
+      - run: node scripts/package.mjs --chatgpt
+      - run: unzip -t dist/redcarpg-chat-skills-0.2.0.zip
+      - run: |
+          unzip -Z1 dist/redcarpg-chat-skills-0.2.0.zip | grep 'skills/multi-session-dev/SKILL.md'
+          unzip -Z1 dist/redcarpg-chat-skills-0.2.0.zip | grep 'skills/immersive-cultural-ui/SKILL.md'
+          unzip -Z1 dist/redcarpg-chat-skills-0.2.0.zip | grep 'skills/ai-assistant-tool-safety/SKILL.md'
+          if unzip -Z1 dist/redcarpg-chat-skills-0.2.0.zip | grep -E '(^|/)(scripts|evals)/'; then exit 1; fi
