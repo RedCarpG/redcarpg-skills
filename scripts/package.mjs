@@ -13,6 +13,8 @@ import { deflateRawSync, crc32 } from 'node:zlib'
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..')
 const argv = process.argv.slice(2)
+const chatgpt = argv.includes('--chatgpt')
+if (chatgpt) argv.splice(argv.indexOf('--chatgpt'), 1)
 const opt = (flag) => { const i = argv.indexOf(flag); return i >= 0 ? argv.splice(i, 2)[1] : null }
 // --from <repo 目录>：打别的 repo 的 skills/（比如私人 repo 的孵化区），输出到那个 repo 的 dist/
 const FROM = resolve(opt('--from') ?? ROOT)
@@ -65,6 +67,51 @@ function zip(entries) {
 const wanted = argv
 const names = readdirSync(SKILLS).filter((n) => statSync(join(SKILLS, n)).isDirectory() && (!wanted.length || wanted.includes(n)))
 mkdirSync(OUT, { recursive: true })
+if (chatgpt) {
+  if (FROM !== resolve(ROOT)) throw new Error('--chatgpt cannot be combined with --from')
+  const plugin = JSON.parse(readFileSync(join(ROOT, 'chatgpt', 'plugin.json'), 'utf8'))
+  const guard = readFileSync(join(ROOT, 'chatgpt', 'runtime-guard.md'), 'utf8').trim()
+  const entries = [{ name: '.codex-plugin/plugin.json', data: Buffer.from(JSON.stringify(plugin, null, 2) + '\n') }]
+  const selected = []
+  for (const name of names) {
+    const dir = join(SKILLS, name)
+    const man = JSON.parse(readFileSync(join(dir, 'manifest.json'), 'utf8'))
+    if (!man.compat?.includes('chatgpt-chat')) {
+      if (wanted.length) throw new Error(name + ': not marked chatgpt-chat compatible')
+      continue
+    }
+    const level = man.runtime?.['chatgpt-chat']?.level
+    if (!['full', 'partial'].includes(level)) throw new Error(name + ': missing runtime.chatgpt-chat.level')
+    const source = readFileSync(join(dir, 'SKILL.md'), 'utf8')
+    const front = source.match(/^---\r?\n[\s\S]*?\r?\n---/)
+    if (!front) throw new Error(name + ': missing SKILL.md frontmatter')
+    // Keep the canonical source untouched. Insert runtime restrictions after frontmatter.
+    const adapted = front[0] + '\n\n' + guard + '\n\n' + source.slice(front[0].length).trimStart()
+    entries.push({ name: 'skills/' + name + '/SKILL.md', data: Buffer.from(adapted) })
+    for (const p of files(dir)) {
+      const rel = relative(dir, p).split(sep).join('/')
+      // References and assets only; do not bundle runnable local scripts or eval cases.
+      if (!rel.startsWith('references/') && !rel.startsWith('assets/')) continue
+      entries.push({ name: 'skills/' + name + '/' + rel, data: readFileSync(p) })
+    }
+    selected.push({ name, version: man.version, level })
+  }
+  if (!selected.length) throw new Error('No ChatGPT-compatible Skills selected')
+  const summary = [
+    '# ChatGPT Plugin — Source and compatibility', '',
+    'Generated from https://github.com/RedCarpG/redcarpg-skills.',
+    'This is a build snapshot, not live GitHub synchronization.',
+    'Local commands, files and tests require available tools and authorization.', '',
+    '| Skill | Version | ChatGPT level |', '| --- | --- | --- |',
+    ...selected.map(x => '| ' + x.name + ' | ' + x.version + ' | ' + x.level + ' |'), ''
+  ].join('\n')
+  entries.push({ name: 'SOURCE_AND_COMPATIBILITY.md', data: Buffer.from(summary) })
+  const out = join(OUT, plugin.name + '-' + plugin.version + '.zip')
+  writeFileSync(out, zip(entries))
+  console.log(out + ': ' + selected.length + ' Skills, ' + (statSync(out).size / 1024).toFixed(0) + ' KB')
+  process.exit(0)
+}
+if (wanted.some(n => !names.includes(n))) throw new Error('Unknown Skill: ' + wanted.filter(n => !names.includes(n)).join(', '))
 for (const name of names) {
   const dir = join(SKILLS, name)
   let version = 'dev'
