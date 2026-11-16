@@ -172,7 +172,7 @@ description: 用多个 AI 编码会话（Claude Code、claude.ai、Codex 等）�
   - 改了做法或坑，同步改私人仓库里的 `multi-session-pr-workflow` 经验。
   - 改了 `scripts/init_project.py`，按六种情况重测：空目录；已有文件的目录连跑两次；只有脚本、没有模板；`docs/tasks` 是文件；`PLAN.md` 是目录；生成的文件里没有断链。
 - **更新记录**：
-  - 2026-11-16（Cirra）：1.2.0。管理会话按任务选择模型和推理强度，补充 Codex 派工方式和开发会话简报字段。`references/tools.md` 的 Claude Code 部分加上桌面应用里挑模型和推理强度的限制（子会话只能同级或更便宜、`effort` 不高于管理会话；子代理按次给 `model`）和用户确认过的 Haiku / Sonnet / Opus / Fable 分档，来自私人仓库经验 `multi-session-pr-workflow` 第 23 条。
+  - 2026-11-16（Cirra）：1.2.0。管理会话按任务选择模型和推理强度，补充 Codex 派工方式和开发会话简报字段。`references/tools.md` 的「云端会话」一行写明云端只加载 claude.ai 里启用的 skill 和仓库 `.claude/skills/`；Claude Code 部分加上桌面应用里挑模型和推理强度的限制（子会话只能同级或更便宜、`effort` 不高于管理会话；子代理按次给 `model`）和用户确认过的 Haiku / Sonnet / Opus / Fable 分档，来自私人仓库经验 `multi-session-pr-workflow` 第 23 条。
   - 2026-11-12（Cirra）：合并 claude.ai 草案与 Codex 的 `development-coordination` 试用稿；加入项目档案、两种合入配置、派工前四项检查、用户注意力上限、验收分档、结束报告第一句、管理会话守则、本地和云端分工、CI 成本。
   - 2026-11-12（Codex 复核后）：本地检查不能代替合并门禁，省 CI 前先核对门禁；审查子代理只给真正只读的工具；验收、同步、云端分支、快速检查都改由项目档案决定；交付确认后再清理 worktree；初始化脚本先校验再写入；CI 测量改用作业时间，加自托管 runner 的信任边界；PLAN 模板不再带断链。
   - 2026-11-12：1.0.0 收进 redcarpg-skills，「来源与维护」改为指向本仓库。

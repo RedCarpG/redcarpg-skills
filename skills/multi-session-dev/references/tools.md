@@ -9,7 +9,7 @@
 | 派子代理 | 子代理（Agent / Task 工具），只交回摘要，彼此不能通信；可按次指定模型，见下文 | 无 | 在当前聊天中明确请求派子代理，可按次指定模型和推理强度，见下文 |
 | 开 worktree | 有项目脚本用脚本；否则 `git worktree add ../<repo>-<名字> -b <分支>`。子代理的 `isolation: worktree` 默认从默认分支开，不会接入项目要的本地资源 | 无 | 〔未验证〕 |
 | 会话之间发消息 | 桌面应用：会话之间可以互发消息；被开出来的会话结束一轮时，管理会话会收到通知 | 无 | 〔未验证〕 |
-| 云端会话 | 云端会话推到远端分支；不会回发消息，要看它的记录或 PR | 无 | 云端任务产出 PR〔未验证〕 |
+| 云端会话 | 云端会话推到远端分支；不会回发消息，要看它的记录或 PR。只加载 claude.ai 账号里启用的 skill（会话开始时同步）和仓库里的 `.claude/skills/`；本机 `~/.claude/skills/`、仓库 `.claude/settings.json` 里开的插件都不加载。改了 skill 要重新上传到 claude.ai，新会话才用上（[文档](https://code.claude.com/docs/en/cloud-environments.md#what-carries-over-from-your-setup)） | 无 | 云端任务产出 PR〔未验证〕 |
 
 ## Claude Code 的实际经验（Cirra，2026-11）
 
