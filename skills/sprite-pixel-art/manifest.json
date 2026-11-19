@@ -1,6 +1,6 @@
 {
   "name": "sprite-pixel-art",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "category": "Sprite",
   "stage": "pixel-art",
   "description": "将角色概念图转成可在目标尺寸显示的像素样稿",

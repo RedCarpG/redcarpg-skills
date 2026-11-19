@@ -1,6 +1,6 @@
 {
   "name": "sprite-quality-review",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "category": "Sprite",
   "stage": "quality-review",
   "description": "验收 Sprite 原尺寸辨识度、技术规格与动画循环",
