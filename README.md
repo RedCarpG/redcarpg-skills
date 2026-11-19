@@ -7,7 +7,7 @@
 Field-tested agent skills for Claude Code, Cursor, Codex and other AI coding agents.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
-[![Skills](https://img.shields.io/badge/skills-10-orange?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/skills-17-orange?style=flat-square)](#skills)
 [![Spec](https://img.shields.io/badge/spec-SKILL.md-black?style=flat-square)](https://agentskills.io)
 
 </div>
@@ -33,6 +33,18 @@ Field-tested agent skills for Claude Code, Cursor, Codex and other AI coding age
 | [`frontend-verification`](./skills/frontend-verification) | 改完界面拿出证据：先用内置浏览器预览，覆盖不到时用无头 Chrome 截多个视口、深浅色、打印，或者读 DOM。收录了实测过的坑（375 宽被撑成 500、rAF 动画冻住、深色模式跟随系统）和一份核对清单 |
 | [`animation-capture`](./skills/animation-capture) | 用假时钟把动画逐帧录下来，做成并排对比的 GIF，两次录制逐字节相同。适用于 CSS、WAAPI、rAF、canvas、three.js / VRM、PixiJS / Live2D |
 | [`immersive-cultural-ui`](./skills/immersive-cultural-ui) | 东方古典或神秘学气质的沉浸式网页：夜空、金线、宣纸、竖排、书法批注、景深视差。提供带具体数值的风格配方、可复用代码和交付前检查清单 |
+
+### Sprite（实验版）
+
+- [sprite-pipeline](./skills/sprite-pipeline) — 按现有素材规划 Sprite 制作和交接
+- [sprite-concept-design](./skills/sprite-concept-design) — 为游戏角色制定可像素化的概念图与三视图
+- [sprite-pixel-art](./skills/sprite-pixel-art) — 将角色概念图转成可在目标尺寸显示的像素样稿
+- [sprite-grid-validation](./skills/sprite-grid-validation) — 测量规则 Sprite 图集尺寸、空帧及逐格包围盒
+- [sprite-animation-frames](./skills/sprite-animation-frames) — 拆分规则图集或时间轴，保留帧序、时长及锚点
+- [sprite-alpha-cleanup](./skills/sprite-alpha-cleanup) — 去除 Sprite 纯色背景、检测杂边与误删
+- [sprite-quality-review](./skills/sprite-quality-review) — 验收 Sprite 原尺寸辨识度、技术规格与动画循环
+
+Claude Code 插件包为 `sprite-skills`。ChatGPT 可上传技能说明；Claude.ai 可导入单技能 ZIP；Codex 项目级安装目录为 `.agents/skills/`。精确测量需要原图、Python 和 Pillow。本地 Aseprite、ComfyUI 须由执行环境单独连接。
 
 ### 虚拟角色
 

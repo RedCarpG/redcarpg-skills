@@ -1,0 +1,19 @@
+{
+  "name": "sprite-grid-validation",
+  "version": "0.1.0",
+  "category": "Sprite",
+  "stage": "grid-validation",
+  "description": "测量规则 Sprite 图集尺寸、空帧及逐格包围盒",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-grid-validation",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "grid-validation"
+  ],
+  "maturity": "experimental"
+}

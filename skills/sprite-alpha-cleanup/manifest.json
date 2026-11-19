@@ -1,0 +1,19 @@
+{
+  "name": "sprite-alpha-cleanup",
+  "version": "0.1.0",
+  "category": "Sprite",
+  "stage": "alpha-cleanup",
+  "description": "去除 Sprite 纯色背景、检测杂边与误删",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-alpha-cleanup",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "alpha-cleanup"
+  ],
+  "maturity": "experimental"
+}

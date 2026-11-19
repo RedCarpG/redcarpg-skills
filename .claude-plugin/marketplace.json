@@ -57,6 +57,21 @@
       "skills": [
         "./skills/multi-session-dev"
       ]
+    },
+    {
+      "name": "sprite-skills",
+      "source": "./",
+      "strict": false,
+      "description": "Sprite design, processing and quality review (experimental).",
+      "skills": [
+        "./skills/sprite-pipeline",
+        "./skills/sprite-concept-design",
+        "./skills/sprite-pixel-art",
+        "./skills/sprite-grid-validation",
+        "./skills/sprite-animation-frames",
+        "./skills/sprite-alpha-cleanup",
+        "./skills/sprite-quality-review"
+      ]
     }
   ]
 }

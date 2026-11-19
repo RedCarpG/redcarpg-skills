@@ -1,0 +1,19 @@
+{
+  "name": "sprite-concept-design",
+  "version": "0.1.0",
+  "category": "Sprite",
+  "stage": "concept-design",
+  "description": "为游戏角色制定可像素化的概念图与三视图",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-concept-design",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "concept-design"
+  ],
+  "maturity": "experimental"
+}
