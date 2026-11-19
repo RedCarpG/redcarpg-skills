@@ -1,0 +1,19 @@
+{
+  "name": "sprite-pixel-art",
+  "version": "0.1.1",
+  "category": "Sprite",
+  "stage": "pixel-art",
+  "description": "将角色概念图转成可在目标尺寸显示的像素样稿",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-pixel-art",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "pixel-art"
+  ],
+  "maturity": "experimental"
+}

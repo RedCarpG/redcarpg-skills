@@ -1,0 +1,25 @@
+{
+  "frame_width": 64,
+  "frame_height": 96,
+  "columns": 8,
+  "rows": 1,
+  "margin": 0,
+  "spacing": 0,
+  "order": "row-major",
+  "durations_ms": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+  ],
+  "anchor_xy": [
+    32,
+    90
+  ],
+  "alpha": "binary",
+  "palette": "shared"
+}

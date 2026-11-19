@@ -1,0 +1,19 @@
+{
+  "name": "sprite-quality-review",
+  "version": "0.1.1",
+  "category": "Sprite",
+  "stage": "quality-review",
+  "description": "验收 Sprite 原尺寸辨识度、技术规格与动画循环",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-quality-review",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "quality-review"
+  ],
+  "maturity": "experimental"
+}

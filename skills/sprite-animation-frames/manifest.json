@@ -1,0 +1,19 @@
+{
+  "name": "sprite-animation-frames",
+  "version": "0.1.0",
+  "category": "Sprite",
+  "stage": "animation-frames",
+  "description": "拆分规则图集或时间轴，保留帧序、时长及锚点",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-animation-frames",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "animation-frames"
+  ],
+  "maturity": "experimental"
+}

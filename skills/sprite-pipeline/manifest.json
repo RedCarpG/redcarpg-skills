@@ -1,0 +1,19 @@
+{
+  "name": "sprite-pipeline",
+  "version": "0.1.0",
+  "category": "Sprite",
+  "stage": "pipeline",
+  "description": "按现有素材规划 Sprite 制作和交接",
+  "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/sprite-pipeline",
+  "compat": [
+    "chatgpt",
+    "claude-ai",
+    "claude-code",
+    "codex-cli"
+  ],
+  "tags": [
+    "sprite",
+    "pipeline"
+  ],
+  "maturity": "experimental"
+}
