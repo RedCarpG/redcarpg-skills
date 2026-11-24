@@ -95,7 +95,7 @@ npx skills add RedCarpG/redcarpg-skills/tree/frontend-verification-v1.0.0/skills
 
 ## 版本和发布
 
-skill 每周发布一次。每个 skill 各有版本号（见它的 `manifest.json`），发布时打 tag `<name>-v<version>`，上面「钉在某个发布版本」的例子就指向这样的 tag。第一次发布之前还没有 tag，所以那个例子现在装不上，第一次发布后才可用。
+skill 每周发布一次。每个 skill 各有版本号（见它的 `manifest.json`），发布时打 tag `<name>-v<version>`，上面「钉在某个发布版本」的例子就指向这样的 tag。固定版本要用已经存在的 tag，把示例里的版本号换成实际发布的版本。
 
 ## 仓库结构
 
