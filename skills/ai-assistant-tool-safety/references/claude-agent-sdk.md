@@ -62,6 +62,9 @@ export function scrubbedEnv(src = process.env): Record<string, string> {
 
 ## 登录排错
 
+- **从 Claude Code 会话（桌面应用、终端）里启动的后台进程会继承宿主的 `CLAUDE_*` 和 `ANTHROPIC_BASE_URL`**：带着它们跑 `claude -p` / `claude auth status` 会连到宿主的代理、报没登录。spawn 前把 `CLAUDE*`（留 `CLAUDE_CONFIG_DIR`）和 `ANTHROPIC_BASE_URL` 去掉。Windows 上不要用 PowerShell `Start-Process -UseNewEnvironment` 来「干净启动」node：它连 `SystemRoot` 都不带，node 启动就 `Assertion failed: ncrypto::CSPRNG` 崩掉。
+- **应用里的「登录 Claude」按钮**：spawn `claude auth login`（stdio 都接管道）。它自己打开浏览器，stdout 打出备用网址，还在等 stdin「Paste code here if prompted」，所以留着进程，把页面上贴的代码写进它的 stdin；`claude auth status --json` 的 `loggedIn` 判断登好没有。测试时设一个临时 `CLAUDE_CONFIG_DIR`，不会动到真实登录。
+
 - 在 Claude 应用的终端里跑 SDK 自带的 `claude.exe auth login`，只把账号资料写进 `~/.claude.json`，没写 token，应用一直报「Not logged in」（2026-10-25 碰到）。
 - 先清干净环境再登（PowerShell）：
 

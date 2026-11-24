@@ -14,6 +14,7 @@
 | `scripts/clock-shim.js` | 接管 `performance.now`、`Date.now`、rAF、定时器、`Math.random`，以及 CSS 和 WAAPI 动画 |
 | `scripts/make_gif.py` | 把几个变体并排，加上标签，所有帧共用一个调色板，同时出一张逐帧对照图 |
 | `references/hook.md` | 一边录画面一边读每帧数值（骨头角度、位置）的做法 |
+| `references/fake-clock-pitfalls.md` | 假时钟下页面卡死、等不到、截到过渡一半的坑（也适用于 Playwright `page.clock`） |
 | `evals/` | 2 个测试用例：网页缓动曲线对比、canvas 弹球挤压变形 |
 
 ## 适用范围

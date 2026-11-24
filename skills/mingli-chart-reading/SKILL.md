@@ -140,7 +140,7 @@ node "<本skill目录>/scripts/chart.mjs" bazi --date 1990-05-17 --time 10:30 --
     - `docs/features.md`：「AI 解读」「紫微、七政四余与星盘的白话解读」两节；
     - `core/README.md`。
   - 经验来自私人 repo 的 [`lessons/mingli-charts-ai.md`](https://github.com/RedCarpG/redcarpg-skills-private/blob/main/lessons/mingli-charts-ai.md)。
-- **源头：** ChroniQ 仓库的 `core/skill/mingli-chart-reading/`，包括这个 SKILL.md、`references/` 和脚本源码 `scripts/chart.ts`、`scripts/run.ts`。它和 chroniq-core 用同一个版本号，`node scripts/chart.mjs --version` 可以查看。[redcarpg-skills](https://github.com/RedCarpG/redcarpg-skills) 的 `skills/mingli-chart-reading/` 和 `~/.claude/skills/mingli-chart-reading/` 都是构建出来的副本，不要直接改。
+- **源头：** ChroniQ 仓库的 `core/skill/mingli-chart-reading/`，包括这个 SKILL.md、`references/` 和脚本源码 `scripts/chart.ts`、`scripts/run.ts`。它和 chroniq-core 用同一个版本号，`node scripts/chart.mjs --version` 可以查看。[RedCarpG/redcarpg-skills-private](https://github.com/RedCarpG/redcarpg-skills-private) 的 `skills/mingli-chart-reading/`（各 agent 从这里链接，每周发版到 [RedCarpG/redcarpg-skills](https://github.com/RedCarpG/redcarpg-skills)）和 `~/.claude/skills/mingli-chart-reading/` 都是构建出来的副本，不要直接改。
 - **怎么改：**
   1. 在 ChroniQ 开 PR 修改。脚本的计算和文字大多在 `src/lib`，参数处理在 `scripts/run.ts`。
   2. 用 `npm test` 测试，`npm run build:skill` 构建到 `core/skill/dist/`。
