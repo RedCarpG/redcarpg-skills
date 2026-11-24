@@ -93,6 +93,10 @@ npx skills add RedCarpG/redcarpg-skills/tree/frontend-verification-v1.0.0/skills
 
 把 `skills/<name>/` 整个文件夹复制到 agent 扫描的目录：Claude Code 是 `~/.claude/skills/`（所有项目可用）或项目里的 `.claude/skills/`。
 
+## 版本和发布
+
+skill 每周发布一次。每个 skill 各有版本号（见它的 `manifest.json`），发布时打 tag `<name>-v<version>`，上面「钉在某个发布版本」的例子就指向这样的 tag。固定版本要用已经存在的 tag，把示例里的版本号换成实际发布的版本。
+
 ## 仓库结构
 
 ```text
