@@ -1,6 +1,6 @@
 {
   "name": "chinese-tts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "category": "Voice / TTS",
   "description": "Text normalization and engineering for Mandarin TTS: how to read numbers, years, phone numbers, units, ranges, links and code; holding number boundaries while streaming; choosing and running local engines (Kokoro, CosyVoice, Qwen3-TTS, sherpa-onnx…) for low first-sentence latency, cancellation and caching. Ships 139 golden cases and a checker.",
   "homepage": "https://github.com/RedCarpG/redcarpg-skills/tree/main/skills/chinese-tts",

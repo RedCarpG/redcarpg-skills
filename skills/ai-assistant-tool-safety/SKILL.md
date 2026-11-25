@@ -1,6 +1,6 @@
 ---
 name: ai-assistant-tool-safety
-description: 给 LLM 开工具、做 AI 助手或 AI 角色时，怎么定工具权限、怎么防提示词注入、怎么让插件安全，以及把 Claude Agent SDK 嵌进自己应用时必须改的默认值（settingSources、claude.ai 连接器、allowedTools 不经过 canUseTool、宿主环境变量、常驻会话）。适用于聊天助手、桌宠、语音伴侣、客服机器人、插件宿主、自动化 agent。只要用户在设计或检查「模型能调用哪些工具、哪些要先问用户、外来内容（通知、网页、邮件、PR 标题、剪贴板）怎么交给模型、插件拿到什么权限」，或者在用 @anthropic-ai/claude-agent-sdk / Agent SDK / query() 做产品，就用这个 skill，即使用户只说「加个工具」「接一下 webhook」「让它能改设置」。Also use for English requests about LLM tool permissions, prompt injection from external content, plugin sandboxing, or embedding the Claude Agent SDK in an app.
+description: 给 LLM 开工具、做 AI 助手/角色/插件宿主时：定工具权限、防外来内容（通知、网页、邮件）里的提示词注入、管插件权限，以及把 Claude Agent SDK（query()、settingSources、canUseTool）嵌进应用时必须改的默认值。用户只说「加个工具」「接 webhook」「让它能改设置」也用。Also for LLM tool permissions, prompt injection, plugin sandboxing, embedding the Claude Agent SDK.
 ---
 
 # AI 助手的工具和权限
@@ -13,6 +13,7 @@ description: 给 LLM 开工具、做 AI 助手或 AI 角色时，怎么定工具
 |---|---|
 | 设计新的工具、新的外来内容入口、改设置的能力 | 本文「六条规矩」+「检查清单」 |
 | 用 Claude Agent SDK（`query()`）做产品 | `references/claude-agent-sdk.md`，先看它的「必须改的默认值」 |
+| 在应用里调用本机 Codex（`codex exec`） | `references/codex-exec.md`，先看「必须改的默认值」 |
 | 做插件、给第三方代码开接口 | `references/plugins.md` |
 | 检查一个已有项目 | 直接走「检查清单」，每条写「有 / 没有 / 不适用」和证据（文件:行号） |
 
@@ -61,11 +62,13 @@ description: 给 LLM 开工具、做 AI 助手或 AI 角色时，怎么定工具
   - 代码：`sidecar/src/notifications/tools.ts`（`DATA_NOTE`）、`sidecar/src/chat/app-tools.ts`（`asksForSettings`）、`sidecar/src/settings-chat/`、`sidecar/src/chat/confirm.ts`、`sidecar/src/plugins/`（`scope.ts`、`tools.ts`、`manifest.ts`）、`sidecar/src/core/env.ts`。
   - 文档：`docs/mvp.md` §5.4、`docs/batch-2.md` §9、`docs/modules.md`、`docs/plugins.md` §3–§7、`docs/chat-settings.md`、`docs/lines.md`。
   - 经验：私人 repo 的 [`lessons/llm-agent-tool-safety.md`](https://github.com/RedCarpG/redcarpg-skills-private/blob/main/lessons/llm-agent-tool-safety.md)、`lessons/claude-agent-sdk-embedding.md`、`lessons/plugin-host-design.md`。
-- **源头：** [RedCarpG/redcarpg-skills](https://github.com/RedCarpG/redcarpg-skills) 的 `skills/ai-assistant-tool-safety/`。`~/.claude/skills/` 里的是安装出来的副本，不要直接改。Cirra 里的代码是它的来源，两边不会自动同步。
+- **源头：** 开发源在 [RedCarpG/redcarpg-skills-private](https://github.com/RedCarpG/redcarpg-skills-private) 的 `skills/ai-assistant-tool-safety/`，每周发版到 [RedCarpG/redcarpg-skills](https://github.com/RedCarpG/redcarpg-skills) 的同名目录。各 agent 的 skills 目录里是 bootstrap 建的链接，公开仓和 claude.ai 上的是发布出来的副本，都不要直接改。Cirra 里的代码是它的来源，两边不会自动同步。
 - **怎么改：**
-  - 在 redcarpg-skills 里改，走 PR；`manifest.json` 版本加一，`node scripts/validate.mjs` 通过后发版（tag `ai-assistant-tool-safety-v<版本>`），再重装本机副本。先看上面三个 lessons 文件有没有新条目可以收进来。
+  - 在私人仓 `skills/ai-assistant-tool-safety/` 改，直接推 `main`（见私人仓 `AGENTS.md`）；发版时由维护会话升 `manifest.json` 版本、发到公开仓。先看上面三个 lessons 文件有没有新条目可以收进来。
   - Agent SDK 升级后，`references/claude-agent-sdk.md` 里的选项名（`settingSources`、`disableClaudeAiConnectors`、`strictMcpConfig`、`persistSession`）要对着新版文档再确认一遍。
   - 某条做法在别的项目上被推翻了，就改掉它，并在更新记录里写明。
 - **更新记录：**
+  - 2026-11-23 · 生图配方库 · 加 `references/codex-exec.md`：嵌入 `codex exec` 时要单独的 CODEX_HOME、逐个关功能、Windows 沙箱、事件和用量的坑
+  - 2026-11-20 · skill 管理会话 · description 收短（省 token）
   - 2026-11-12 · 1.0.0，搬进 redcarpg-skills 公开发布。改掉本机绝对路径，来源项目写成链接；内容不变。
   - 2026-11-10 · Cirra · 初版：六条规矩、检查清单；Agent SDK 必须改的默认值；插件权限；`evals/` 里两个测试提示。

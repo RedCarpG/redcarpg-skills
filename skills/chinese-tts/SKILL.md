@@ -1,11 +1,11 @@
 ---
 name: chinese-tts
-description: 让程序把中文（夹英文、数字、链接、代码）念出来时的文本规范化（TN）和语音合成工程：先转念法再切句、流式输出时怎么扣住数字边界、年份/电话/验证码/单位/温度/百分比/范围/分数/网络用语怎么念、念法替换表、念错了怎么查；本机 TTS 引擎（Kokoro、Matcha、CosyVoice、Qwen3-TTS、sherpa-onnx、vLLM、WSL2）的选型、首句延迟、取消、缓存、后备音源、显存；语音输入和插话。附 139 条验收过的「原文 → 念法」对照用例和一个检查脚本。只要用户在做朗读、语音助手、AI 角色说话、有声读物、播报、TTS 前处理，或者抱怨「数字念错了」「年份念成两千零二十六」「电话号码念成几亿」「链接被逐字念」「英文被跳过」「流式念出来和整句不一样」「取消以后下一句很慢」，就用这个 skill，即使用户没说「TN」或「文本规范化」。Also use for English requests about Chinese text normalization for TTS, number/date reading in Mandarin speech synthesis, or streaming TTS latency.
+description: 让程序念中文（夹英文、数字、链接）时的文本规范化和 TTS 工程：年份、电话、单位、范围怎么念，流式时扣住数字边界，本机引擎（Kokoro、CosyVoice、sherpa-onnx）的首句延迟、取消、缓存。附 139 条对照用例和检查脚本。用户抱怨「数字念错」「链接被逐字念」时用。Chinese TTS text normalization.
 ---
 
 # 中文语音合成：文本规范化和工程
 
-这个 skill 来自一个天天在说话的 AI 桌宠（见文末「来源与维护」）：Claude 流式回复，逐句交给本机 TTS 念出来。下面的规则都有测试，数字都是量过的。
+来自一个天天在说话的 AI 桌宠：Claude 流式回复，逐句交给本机 TTS 念出来。规则都有测试，数字都是量过的。
 
 一句话原则：**念法在自己这层转好，引擎只管发音。** 交给引擎的话，换一个引擎念法就变；整个换成现成的 TN 库，也有几处会变差。现成库（wetext、PaddleSpeech）拿来对照、补规则。
 
@@ -13,86 +13,42 @@ description: 让程序把中文（夹英文、数字、链接、代码）念出�
 
 ```
 模型的流式文字
-  → ① 过滤：去掉装饰、emoji、列表符号；代码块、表格、链接换成一句话（流式时要能认出被拆开的）
+  → ① 过滤：去掉装饰、emoji、列表符号；代码块、表格、链接换成一句话
   → ② 转念法：数字、时间、单位、符号、念法替换表（流式时扣住边界）
   → ③ 切句：第一段切到第一个逗号，之后超过 40 字在逗号处切
   → ④ 合成：只比念到的地方提前约 20 秒；打断时真的停掉推理
 ```
 
-**顺序不能换：先转念法，再切句。** 先切句、后清理时实测出三个错：
+## 硬规则
 
-| 原文 | 先切句的结果 | 问题 |
-|---|---|---|
-| `下午14:30开会` | `下午14:` / `30开会` | 冒号被当成逗号，时间被切开 |
-| `看这里：https://…/pull/7 就行` | `https:` / `//…/pull/7 就行` | 链接被切成两半，地址被逐字念 |
-| `大概3~5天` | `大概35天` | `~` 被当装饰去掉，念成「三十五天」 |
+1. **先转念法，再切句。** 反过来实测出错：`14:30` 被冒号切开、链接被切成两半逐字念、`3~5` 的 `~` 被去掉念成「三十五」。半角 `:` 只在后面跟空白时才当逗号。
+2. **流式要扣住边界：** 数字后面再等 2 个字才放出去（「工作了26年」不能念成「二六年」）；单位隔着空格也要能认；转下一段时带上上一段末尾几个汉字；最多扣 200 字（代码块、表格 4000 字）。
+3. **每条测试按「逐字喂」和「整段喂」各跑一遍，结果要一样。**
+4. 新写或改 TN 规则，跑对照用例当验收线：
+   ```bash
+   node scripts/check-tn.mjs ./my-tn.mjs              # 模块导出 normalize(text) 和（可选）createStream()
+   node scripts/check-tn.mjs ./my-tn.mjs --only 号码  # 只看某一组
+   ```
+5. 念错时先分类（没写成念法 / 多音字猜错 / 参考录音问题 / 随机），用三个声音念同一句判断该加替换表还是换声音；原文和念法一起记日志。
+6. 取消要真的停掉推理（vLLM 断开就 `abort_request`）；有的引擎会静默跳过英文，依赖升级前重新验证。
 
-半角 `:` 只在后面跟空白时才当逗号。
+## 什么情况读哪里
 
-## 流式要扣住边界
-
-整句转对了，流式不一定对。逐字流式时「工作了26年」「80年代」被念成「二六年」「八零年代」，因为数字后面的字还没到；`-10°C` 那段被当成英文原样念了。
-
-- 数字后面再等 2 个字才放出去；单位隔着空格也要能认（`跑了 5 ` 先扣住，等 `km`）。
-- 转下一段时带上上一段末尾几个汉字（判断「了 26 年」要看到前面的「了」）。
-- 最多扣 200 字，代码块、表格最多扣 4000 字，到上限就放。
-- **每条测试都按「逐字喂」和「整段喂」各跑一遍，结果要一样。**
-
-## 规则速查（详见 `references/rules.md`）
-
-| 类 | 例子 | 念法 |
-|---|---|---|
-| 年份 | `2026年`、`2026届`、`26年见` | 逐位：二零二六年、二零二六届、二六年见 |
-| 年数 | `工作了26年`、`80年代`、`26年前` | 照数量：二十六年、八十年代、二十六年前 |
-| 号码 | 电话、验证码、`编号27149`、`房间1201` | 逐位，1 念「幺」，横杠和空格处停一下 |
-| 五位数 | `95588` / `价格 12999` | 没量词、不以 0 结尾、前面不是说钱的 → 号码；否则照数量 |
-| 网络用语 | `666`、`2333`、`520` 单独出现 / `666个赞`、`花了888` | 逐位 / 照数量（只认一张固定单子） |
-| 单位前的 2 | `2个`、`2L`、`2℃` | 两个、两升；温度除外：二摄氏度 |
-| 单位 | `60km/h`、`3kWh`、`5min`、`10mg` | 每小时六十公里、三度电、五分钟、十毫克 |
-| 不转的单位 | `4g网络`、`5A景区`、`16GB` | 原样交给引擎 |
-| 范围、百分比 | `3~5%`、`3-5km`、`-1.5~2` | 百分之三到五、三到五公里、负一点五到二 |
-| 时间 | `14:30`、`13:00`、`9:05` | 十四点半、十三点、九点零五（24 小时制） |
-| 日期、分数 | `10/26 交` / `有7/12的观众` | 十月二十六号 / 十二分之七（前面是「有、占、约」才当分数） |
-| 符号 | `#15`、`2x`、`x3`、`100w` | 十五号、两倍、乘三、一百万 |
-
-## 用对照用例检查
-
-`references/golden-cases.json` 有 115 条整段用例和 24 条流式用例，都是原项目验收过的念法。`scripts/check-tn.mjs` 拿它们测你的实现：
-
-```bash
-node scripts/check-tn.mjs ./my-tn.mjs                  # 模块导出 normalize(text) 和（可选）createStream()
-node scripts/check-tn.mjs ./my-tn.mjs --only 号码      # 只看某一组
-```
-
-- 比较时忽略空白和常见标点，只比念法。带 `note` 的用例是「参考」，只报出来不算失败。
-- 新写 TN 时把它当验收线；改规则时跑一遍，防止改好一处、坏了另一处。
-- 有争议的念法（比如「这台电脑 12999」会被当成号码）原项目是接受了的。你的产品想要别的念法，就改用例，并在用例旁写为什么。
-
-## 念错了怎么查
-
-分四类：念之前没写成念法；多音字是模型猜错；参考录音有问题；随机的（重抽一次就好）。
-
-用当前声音和另外两个声音各念同一句：每个声音都在同一个字上错，就加念法替换表；只有一个声音怪，就换声音。每次把原文和转出来的念法一起记进日志（jsonl），回头查得到。
-
-## 工程（详见 `references/engines.md`）
-
-- **首句延迟：** 第一段只切到第一个逗号。Matcha 第一个字到达后 0.65 秒出第一段音频。
-- **最有效的提速是缓存：** 没合成过的句子 CosyVoice 首块 2.6–3 秒，命中缓存 6 毫秒。用户一开口就预合成垫话（「嗯」「我想想」）。
-- **取消要真的停掉推理：** vLLM 连接一断就 `abort_request`，否则下一句要等 4.9 秒（做了以后 0.8–1.7 秒）。
-- **英文会被静默跳过：** 有的引擎不念 `GitHub`、`PR`、`%`；依赖升级前重新验证英文。
-- **后备音源：** 主音源没就绪或一开口就出错，就换后备；念到一半出错不重念。服务的 HTTP 起来了不等于模型加载好了，遇到 503 要重试。
+| 情况 | 读 |
+|---|---|
+| 流程每步的细节、先切句会出的三个错、流式扣边界的规则 | `references/pipeline.md` |
+| 某类念法：年份/年数、号码/五位数、网络用语、单位前的 2、单位、范围百分比、时间日期分数、符号、聊天回复专用、念法替换表 | `references/rules.md`（开头是速查表） |
+| 用对照用例检查（忽略标点、`note` 用例、有争议的念法怎么改）、念错了怎么查 | `references/checking.md` |
+| 对照用例本身（115 条整段、24 条流式） | `references/golden-cases.json` |
+| 引擎选型（CPU/GPU）、首句延迟、取消、缓存、后备音源和就绪、生成新声音、语音输入和插话、安装 | `references/engines.md`（开头是要点） |
+| 完整来源（代码和文档文件）、重新抽用例的办法、更早的更新记录 | `references/maintenance.md` |
 
 ## 来源与维护
 
-- **来源：** Cirra（AI 桌宠，[RedCarpG/cirra-deskpet](https://github.com/RedCarpG/cirra-deskpet)）和它的语音服务 cirra-voice，2026-10 至 2026-11。
-  - 代码：`sidecar/src/tts/speech/`（`numbers.ts`、`units.ts`、`links.ts`、`filter.ts`、`overrides.ts`、`speech.test.ts`）、`sidecar/src/tts/splitter.ts`、`sidecar/src/tts/pronunciations.ts`。
-  - 文档：`docs/speech.md`、`docs/speech-tn.md`（119 句三方对照）、`docs/tts.md`、`docs/voices.md`、`docs/voice-chat.md`、`docs/voice-chat-2.md`、`docs/voice-install.md`、`docs/perf-checkup.md`。
-  - 经验：私人 repo 的 [`lessons/chinese-tts.md`](https://github.com/RedCarpG/redcarpg-skills-private/blob/main/lessons/chinese-tts.md)。
-- **源头：** [RedCarpG/redcarpg-skills](https://github.com/RedCarpG/redcarpg-skills) 的 `skills/chinese-tts/`。`~/.claude/skills/` 里的是安装出来的副本，不要直接改。`references/golden-cases.json` 是 2026-11-10 从 Cirra 的 `speech.test.ts` 用脚本抽出来的，两边不会自动同步。
-- **怎么改：**
-  - 在 redcarpg-skills 里改，走 PR；`manifest.json` 版本加一，`node scripts/validate.mjs` 通过后发版（tag `chinese-tts-v<版本>`），再重装本机副本。先看 `lessons/chinese-tts.md` 有没有新条目可以收进来。
-  - Cirra 的 TN 规则有变化时，重新抽一次用例（抽的办法：读 `speech.test.ts` 里 `readNumbers` 那组和「流式」那组的 `[原文, 念法]`），并用 Cirra 编好的 `sidecar/dist/tts/` 接一个适配模块跑 `check-tn.mjs`，应该全过。
-  - 引擎的数字（延迟、实时率、显存）是 2026-10 在一台 8 GB 显存、CPU 没有 VNNI 的电脑上量的，换了硬件要重新量。
-- **更新记录：**
-  - 2026-11-12 · 1.0.0，搬进 redcarpg-skills 公开发布。改掉本机绝对路径，来源项目写成链接；内容不变。
-  - 2026-11-10 · Cirra · 初版：流程和顺序、流式边界、规则速查和细则、念错排查、引擎工程；139 条对照用例和 `check-tn.mjs`（用 Cirra 的实现跑过，全过）；`evals/` 里两个测试提示。
+- **来源：** Cirra（AI 桌宠，[RedCarpG/cirra-deskpet](https://github.com/RedCarpG/cirra-deskpet)）和语音服务 cirra-voice，2026-10 至 2026-11，`sidecar/src/tts/` 和 `docs/speech*.md`、`docs/tts.md` 等；经验在私人 repo 的 [`lessons/chinese-tts.md`](https://github.com/RedCarpG/redcarpg-skills-private/blob/main/lessons/chinese-tts.md)。完整文件列表见 `references/maintenance.md`。
+- **源头：** [RedCarpG/redcarpg-skills-private](https://github.com/RedCarpG/redcarpg-skills-private) 的 `skills/chinese-tts/`，每周发版到 [RedCarpG/redcarpg-skills](https://github.com/RedCarpG/redcarpg-skills)。各 agent 的 skills 目录、公开仓、claude.ai 上的都是副本，不要直接改。`references/golden-cases.json` 是从 Cirra 的 `speech.test.ts` 抽出来的，两边不自动同步。
+- **怎么改：** 先看 lessons 有没有新条目；Cirra 的 TN 规则变了就重新抽用例并用它编好的实现跑 `check-tn.mjs`，应全过（办法见 `references/maintenance.md`）；引擎数字换了硬件要重新量；发版时 `manifest.json` 升版本；下面加一行更新记录。
+- **更新记录：**（更早的完整记录见 `references/maintenance.md`）
+  - 2026-11-20 · skill 管理会话 · description 收短，正文细节移到 references/，SKILL.md 只留流程和索引（省 token）
+  - 2026-11-12 · 1.0.0，搬进 redcarpg-skills 公开发布。
+  - 2026-11-10 · Cirra · 初版：流程、流式边界、规则、念错排查、引擎；139 条对照用例和 `check-tn.mjs`。
